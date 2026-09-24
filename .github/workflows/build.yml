@@ -1,31 +1,33 @@
 name: Build Windows EXE
 
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+push:
+branches: [ main ]
+workflow_dispatch:
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+build-windows:
+runs-on: windows-latest
 
-    steps:
-    - name: Check out Git repository
-      uses: actions/checkout@v4
+steps:
+- name: Check out Git repository
+  uses: actions/checkout@v4
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+- name: Install Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: 22
 
-    - name: Install Dependencies
-      run: npm install
+- name: Install Dependencies
+  run: npm install
 
-    - name: Build Electron App
-      run: npm run build
+- name: Build Electron App
+  run: npm run build
+  env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload Windows EXE
-      uses: actions/upload-artifact@v4
-      with:
-        name: OmniTool-Windows-App
-        path: dist/*.exe
+- name: Upload Windows EXE Artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: OmniTool-Windows-App
+    path: dist/*.exe
